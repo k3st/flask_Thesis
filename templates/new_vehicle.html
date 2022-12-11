@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    h1 {
+      padding-top: 50px;
+      padding-bottom: 70px;
+      text-align: center;
+    }
+
+    img {
+      padding-left: 30px;
+      height: 120px;
+      width: 150%;
+    }
+
+    /* ADD to style.css folder */
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+
+    section {
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .row {
+      display: flex;
+      padding: 1rem;
+    }
+
+    .column {      
+      display: flex;
+      justify-content: center;
+      width: 50%;
+      padding-left: 3%;
+      padding-right: 3%;
+    }
+
+    .columnpic {      
+      display: flex;
+      justify-content: center;
+      width: 50%;
+      margin-right: 15px;
+    }
+
+    .pic {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    input[type=submit] {
+      border: none;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="banner">
+    <div class="navbar">
+      <ul>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href="#">Vehicle</a>
+        </li>
+        <li>
+          <a href="#">Cargo</a>
+        </li>
+      </ul>
+    </div>
+
+
+    <h1 style="color: white;"> CHOOSE VEHICLE </h1>
+
+    <form action="/cargo.html">
+      <div>
+        <section>
+          <div class="row">
+            <div class="column">
+              <div class="columnpic">
+                <input type="radio" id="lim_Four" name="fav_language" value="Capacity of Four Pallets" >
+                <img src="img/l300-van.jpg" />
+              </div>
+            </div>
+  
+            <div class="column">
+              <div class="columnpic">
+                <input type="radio" id="lim_Ten" name="fav_language" value="Capacity of Ten Pallets" >
+                <img src="img/6W.jpg" />
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="column">
+              <div class="columnpic">
+                <input type="radio" id="lim_Six" name="fav_language" value="Six Pallets">
+                <img src="img/closed van.jpg" />
+              </div>
+            </div>
+            <div class="column">
+              <div class="columnpic">
+                <input type="radio" id="lim_Twelve" name="fav_language" value="Capacity of Twelve Pallets">
+                <img src="img/10W.jpg" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+  
+      <center>
+        <div style="margin: auto;  padding-top: 15px;">
+          <input type="submit" value=" CONTINUE " onclick="displayRadioValue()">      
+        </div>
+      </center>
+    </form>
+    
+
+  </div>
+</body>
+</html>

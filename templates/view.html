@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <p> TABLE FOR CARGO LOADING</p>
+    <table> 
+        <tr>
+            <th>NUMBER</th>
+        </tr>
+        <tr>
+            {% for item in values %}
+            <td> 'CARGO': {{item.name}} </td>
+            {% endfor %}
+        </tr>
+    </table>    
+    
+</body>
+</html>
+        

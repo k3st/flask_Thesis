@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crate items</title>
+    <link rel="stylesheet" href="/static/style3.css">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <ul>
+                <li>
+                    <a href="{{url_for('index')}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{url_for('vehicle')}}">Vehicle</a>
+                </li>
+            </ul>
+        </div>
+        <div class="Item-Form">
+            <h1>Item form</h1>
+            <form action="#" method="post">
+                <p>Length:</p>
+                <input type="number" name="length" placeholder="Length">
+                <p>Width:</p>
+                <input type="number" name="width" placeholder="width">
+                <p>Height</p>
+                <input type="number" name="height" placeholder="height">
+                <p></p>
+                <button type="submit">Confirm</button>
+            </form>
+        </div>
+    </div>
+    <p> TABLE FOR CARGO LOADING</p>
+    <table> 
+        <tr>
+            <th>NUMBER</th>
+        </tr>
+        <tr>
+            {% for item in values %}
+            <td> 'CARGO': {{item.name}} </td>
+            {% endfor %}
+        </tr>
+    </table>
+</body>
+
+</html>

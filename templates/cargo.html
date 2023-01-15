@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crate items</title>
+    <link rel="stylesheet" href="/static/style3.css">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+           <ul>
+                 <li>
+                    <a href="{{url_for('index')}}">Home</a>
+                </li>
+                <li>
+                    <a href="{{url_for('vehicle')}}">Vehicle</a>
+                </li>
+            </ul>
+        </div>
+        <div class="Item-Form">
+            <h1>Item form</h1>
+            <form action="#" method="post">
+                <p>Profit:</p>
+                <input type="number" name="profit" placeholder="profit">
+                <p>Length:</p>
+                <input type="number" name="length" placeholder="length">
+                <p>Width:</p>
+                <input type="number" name="width" placeholder="width">
+                <p>Height</p>
+                <input type="number" name="height" placeholder="height">
+                <p>Price:</p>
+                <input type="number" name="price" placeholder="price">
+                <p></p>
+                <button type="submit">Confirm</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

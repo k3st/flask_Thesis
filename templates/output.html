@@ -12,21 +12,30 @@
                 <p>Height = {{h}}</p>
                 <p>Weight = {{w}}</p>
                 <p>Cbm = {{v}}</p>
-                <a href="{{url_for('index')}}">
+                <p>Profit = {{p}}</p>
+                <p>Price = {{pri}}</p>
+                
+                <a href="{{url_for('cargo')}}">
                     <button>Again</button>
                 </a>
-                <button type="submit">Remove</button>
-                <button type="submit">Optimize</button>
+                <a href="{{url_for('buffer')}}">
+                    <button>Optimize</button>
+                </a>
+
             </div>
         </div>
-        <p> TABLE FOR CARGO LOADING</p>
-        <table> 
+        <table class> 
             <tr>
                 <th>NUMBER</th>
             </tr>
             <tr>
                 {% for item in values %}
-                <td> 'CARGO': {{item.name}} </td>
+                <td>'Id': {{item.id}} 
+                    'Cbm': {{item.name}}
+                    'Profit': {{item.profits}}
+                    'Price Per Weight': {{item.pper}}
+                    <a href="{{ url_for('delete', id = item.id)}}">Delete </a>
+                </td>
                 {% endfor %}
             </tr>
         </table>

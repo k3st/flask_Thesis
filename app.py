@@ -1,253 +1,87 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from model import db,CargoModel
+#from compute_package import computeCargo  <---- old CargoModel
 
+from flask_migrate import Migrate
 from datetime import datetime
- 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cargo.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dataCargo.db'
+db.init_app(app)
 
-# Initialize Database
-db = SQLAlchemy(app)
-migrate = Migrate(app,db)
+# migrate = Migrate(app,db)
 
-# Initialize Variables
-new_W = []
-p = []
-w = []
-p_per_weight = []
-
-# Algorithm Classes
-
-
-# Create Database Model
-class Cargo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer, nullable=False)
-    profits = db.Column(db.Integer, nullable=False)
-    pper = db.Column(db.Integer, nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-
-    #Function to return
-    def __repr__(self) -> str:
-        return '<Name %r>' % self.id 
+@app.before_first_request
+def create_table():
+    db.create_all()
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/buffer', methods=['GET','POST'])
+def buffer():
+    return render_template('buffer.html')
+
+# Compute Using BnB Algorithm
+@app.route('/optimize', methods=['GET','POST'])
+def Optimize():
+    return
+    #computeCargo(CargoModel,db),
+
+#[CREATE] done
+@app.route('/cargo/create' , methods=['GET','POST'])
+def cargo():
+    if request.method == 'GET':
+        return render_template('cargo.html')
+    
+    if request.method == 'POST':
+        price_per_weight = request.form['price_per_weight']
+        cbm = request.form['cbm']           
+        profit = request.form['profit']
+        #volume = 0.01 * (int(length) * int(height) * int(width)) 
+        cargos = CargoModel(price_per_weight=price_per_weight, cbm = cbm, profit=profit)
+        db.session.add(cargos)
+        db.session.commit()
+        return redirect ('/showData')
+
+@app.route('/vehicle', methods=['GET','POST'])
+def vehicle():
+    if request.method == 'POST':
+        climit = request.form['vehicle_limit']
+        db.session.add(climit)
+        db.session.commit()
+        return redirect ('/cargo')
+
+
+# [READ] Show all data in database in Tables done
+@app.route('/showData', methods=['GET','POST'])
+def showData():
+    # data = CargoModel.query.order_by(CargoModel.date_created)
+    result = CargoModel.query.all()
+    print("The DATABASE", result)
+    return render_template('showData.html', result=result)
+
+#[UPDATE]
+# [DELETE]
 @app.route('/delete/<int:id>')
 def delete(id):
-    item_to_delete = Cargo.query.get_or_404(id)
+    item_to_delete = CargoModel.query.get_or_404(id)
     print(item_to_delete)
-    items = Cargo.query.all()
+    items = CargoModel.query.all()
     for i in items:
         if i.id == item_to_delete:
             w.remove(i.name)
     try:
         db.session.delete(item_to_delete)
         db.session.commit()
-        return render_template('output.html',values = Cargo.query.all())
+        return render_template('output.html',values = CargoModel.query.all())
     except:
-        return render_template('output.html',values = Cargo.query.all())
+        return render_template('output.html',values = CargoModel.query.all())
 
 
-@app.route('/vehicle', methods=['GET','POST'])
-def vehicle():
-    if request.method == 'POST':
-        climit = request.form['vehicle_limit']
-        slimit = int(climit)
-        new_W.append(slimit)
-        return render_template('vehicle_output.html')
-    else:
-        return render_template('vehicle.html')
-
-@app.route('/cargo', methods=['GET','POST'])
-def cargo():
-    if request.method == 'POST':
-        profit = request.form['profit']
-        length = request.form['length']
-        height = request.form['height']
-        width = request.form['width']
-        price = request.form['price']
-        print('Length',length,"/n","Height",height,"/n","Width",width)
-        volume = 0.01 * (int(length) * int(height) * int(width)) 
-        new_volume = Cargo(name=volume,profits=profit,pper=price)
-        try:
-            db.session.add(new_volume)
-            db.session.commit()
-            return render_template('output.html',l=length,h=height,w=width,v=volume,p=profit,pri=price,values = Cargo.query.all())
-        except:
-            return render_template('output.html',l=length,h=height,w=width,v=volume,p=profit,pri=price,values = Cargo.query.all())
-            
-    else:
-        return render_template('cargo.html')
-
-@app.route('/buffer', methods=['GET','POST'])
-def buffer():
-    return render_template('buffer.html')
-
-
-@app.route('/optimize', methods=['GET','POST'])
-def optimize():
-    volumes = Cargo.query.all()
-    for i in volumes:
-        print(i.name)
-        print(i.profits)
-        print(i.pper)
-        w.append(i.name)
-        p.append(i.profits)
-        p_per_weight.append(i.pper)
-    print(w)
-    global n
-    n = len(w)
-    print(n)
-    global W
-    for i in new_W:
-        W = i
-    print(W)
-    print(p)
-    print(p_per_weight)
-    # Start of Algorithm
-    nodes_generated = 0
-    pq = Priority_Queue()
-
-    v = Node(-1, 0, 0) # v initialized to be the root with level = 0, profit = $0, weight = 0
-    nodes_generated+=1
-    maxprofit = 0 # maxprofit initialized to $0
-    v.bound = get_bound(v)
-    #print("v.bound = ", v.bound)
-
-
-    pq.insert(v)
-
-    while pq.length != 0:
-        v = pq.remove() #remove node with best bound
-        print("\nNode removed from pq.")
-        print("Priority Queue: ") 
-        pq.print_pqueue()
-
-        print("\nmaxprofit = ", maxprofit)
-        print("Parent Node: ")
-        print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
-
-        if v.bound > maxprofit: #check if node is still promising
-            #set u to the child that includes the next item
-            u = Node(0, 0, 0)
-            nodes_generated+=1
-            u.level = v.level + 1
-            u.profit = v.profit + p[u.level]
-            u.weight = v.weight + w[u.level]
-            #take v's list and add u's list
-            u.items = v.items.copy()
-            u.items.append(u.level) # adds next item
-            print("child that includes the next item: ")
-            print("Child 1:")
-            print("u.level = ", u.level, "u.profit = ", u.profit, "u.weight = ", u.weight)
-            print("u.items = ", u.items)
-            if u.weight <= W and u.profit > maxprofit: 
-                #update maxprofit
-                maxprofit = u.profit
-                print("\nmaxprofit updated = ", maxprofit)
-                bestitems = u.items
-                print("bestitems = ", bestitems)
-            u.bound = get_bound(u)
-            print("u.bound = ", u.bound)
-            if u.bound > maxprofit:
-                pq.insert(u)
-                print("Node u1 inserted into pq.")
-                print("Priority Queue : ") 
-                pq.print_pqueue()
-            #set u to the child that does not include the next item
-            u2 = Node(u.level, v.profit, v.weight)
-            nodes_generated+=1
-            u2.bound = get_bound(u2)
-            u2.items = v.items.copy()
-            print("child that doesn't include the next item: ")
-            print("Child 2:")
-            print("u2.level = ", u2.level, "u2.profit = ", u2.profit, "u2.weight = ", u2.weight, "u2.bound = ", u2.bound)
-            print("u2.items = ", u2.items)
-            if u2.bound > maxprofit:
-                pq.insert(u2)
-                print("Node u2 inserted into pq.")
-                print("Priority Queue : ") 
-                pq.print_pqueue()
-
-    print("\nEND maxprofit = ", maxprofit, "nodes generated = ", nodes_generated)
-    bubble_sort(bestitems)
-    print("bestitems = ", bestitems)
-    return render_template('optimize.html')
-
-class Priority_Queue:
-    def __init__(self):
-        self.pqueue = []
-        self.length = 0
-    
-    def insert(self, node):
-        for i in self.pqueue:
-            get_bound(i)
-        i = 0
-        while i < len(self.pqueue):
-            if self.pqueue[i].bound > node.bound:
-                break
-            i+=1
-        self.pqueue.insert(i,node)
-        self.length += 1
-
-    def print_pqueue(self):
-        for i in list(range(len(self.pqueue))):
-            print ("pqueue",i, "=", self.pqueue[i].bound)
-                    
-    def remove(self):
-        try:
-            result = self.pqueue.pop()
-            self.length -= 1
-        except: 
-            print("Priority queue is empty, cannot pop from empty list.")
-        else:
-            return result
-
-class Node:
-    def __init__(self, level, profit, weight):
-        self.level = level
-        self.profit = profit
-        self.weight = weight
-        self.items = []
-
-
-
-
-def get_bound(node):
-    if node.weight >= W:
-        return 0
-    else:
-        result = node.profit
-        j = node.level + 1
-        totweight = node.weight
-        while j <= n-1 and totweight + w[j] <= W:
-            totweight = totweight + w[j]
-            result = result + p[j]
-            j+=1
-        k = j
-        if k<=n-1:
-            result = result + (W - totweight) * p_per_weight[k]
-        return result
-        
-def bubble_sort(nlist):
-    for i in range(len(nlist) - 1, 0, -1):
-        no_swap = True
-        for j in range(0, i):
-            if nlist[j + 1] > nlist[j]:
-                nlist[j], nlist[j + 1] = nlist[j + 1], nlist[j]
-                no_swap = False
-        if no_swap:
-            return 
-
-if __name__ == '__main__':
-    db.drop_all()
-    db.create_all()
+if __name__ == '__main__':    
+    app.run(host='localhost', port=5000)
+    # db.drop_all()
+    # db.create_all()    
     app.run(debug = True)
-
-

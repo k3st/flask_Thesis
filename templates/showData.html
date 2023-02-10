@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crate items</title>
+    <link rel="stylesheet" href="/static/style3.css">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <ul>
+                <li>
+                    <a href="{{url_for('index')}}">Home</a>
+                </li>
+            </ul>
+        </div>        
+    </div>
+    <p> TABLE FOR CARGO LOADING</p>
+    <table> 
+        <tr>
+            <th>NUMBER</th>
+        </tr>
+        <tr>
+            {% for item in result %}
+            <td> 'CARGO': {{item}} </td>
+            {% endfor %}
+        </tr>
+    </table>
+</body>
+
+</html>

@@ -15,55 +15,93 @@ db.init_app(app)
 def create_table():
     db.create_all()
 
+# ================================= #
+#       ROUTES for Functions        #
+# ================================= #
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/buffer', methods=['GET','POST'])
-def buffer():
+@app.route('/buffer', methods=['GET','POST']) 
+def buffer(): ## NOT USED
     return render_template('buffer.html')
 
-# Compute Using BnB Algorithm
-@app.route('/optimize', methods=['GET','POST'])
-def Optimize():
-    return
-    #computeCargo(CargoModel,db),
 
-#[CREATE] done
+# Compute Using BnB Algorithm           -- not yet implemented
+@app.route('/optimize', methods=['GET','POST'])
+def Optimize():  
+    return
+    #computeCargo(CargoModel,db)
+
+
+# [CREATE]                               ---  done
 @app.route('/cargo/create' , methods=['GET','POST'])
 def cargo():
     if request.method == 'GET':
         return render_template('cargo.html')
     
     if request.method == 'POST':
-        price_per_weight = request.form['price_per_weight']
-        cbm = request.form['cbm']           
-        profit = request.form['profit']
-        #volume = 0.01 * (int(length) * int(height) * int(width)) 
-        cargos = CargoModel(price_per_weight=price_per_weight, cbm = cbm, profit=profit)
+        cargos = CargoModel(
+            price_per_weight = request.form['price_per_weight'],
+            cbm = request.form['cbm'],
+            profit = request.form['profit']
+        )        
+        #volume = 0.01 * (int(length) * int(height) * int(width))         
         db.session.add(cargos)
         db.session.commit()
         return redirect ('/showData')
+
 
 @app.route('/vehicle', methods=['GET','POST'])
 def vehicle():
     if request.method == 'POST':
         climit = request.form['vehicle_limit']
         db.session.add(climit)
-        db.session.commit()
-        return redirect ('/cargo')
+        db.session.commit()    
+    return render_template ('vehicle.html')
+    
 
-
-# [READ] Show all data in database in Tables done
+# [RETRIEVE] Show all data          -- 70% done  
 @app.route('/showData', methods=['GET','POST'])
 def showData():
     # data = CargoModel.query.order_by(CargoModel.date_created)
     result = CargoModel.query.all()
-    print("The DATABASE", result)
+    # print("The DATABASE", result)
     return render_template('showData.html', result=result)
 
-#[UPDATE]
-# [DELETE]
+## ADD Single Retrieve FUNCTION             --- in progress
+@app.route('/showSingleData/<int:pkgID>')
+def GetSingleCargo(pkgID):
+    cargos = CargoModel.query.filter_by(id = pkgID).first()
+    if cargos:
+        return render_template('showOneData.html', cargos = cargos)
+    return f"ERROR: --- \nCargo # {pkgID} does not exist. "
+
+
+# [UPDATE]                  -- ID not working? ? ?
+@app.route('/update/<int:pkgID>', methods = ['GET', 'POST'])
+def update(pkgID):
+    cargos = CargoModel.query.filter_by(id=pkgID).first()
+    if request.method == 'POST':
+        if cargos:
+            db.session.delete(cargos)
+            db.session.commit()
+
+            cargos = CargoModel(
+            id = pkgID,
+            price_per_weight = request.form['price_per_weight'],
+            cbm = request.form['cbm'],
+            profit = request.form['profit']
+            )
+            db.session.add(cargos)
+            db.session.commit()
+            return redirect(f'/update/{pkgID}')
+        return f"ERROR: --- \nCargo # {pkgID} does not exist. "
+    return render_template('cargoUpdate.html', cargos = cargos)
+    
+
+# [DELETE]  -                   -- no changes 
 @app.route('/delete/<int:id>')
 def delete(id):
     item_to_delete = CargoModel.query.get_or_404(id)
@@ -78,6 +116,8 @@ def delete(id):
         return render_template('output.html',values = CargoModel.query.all())
     except:
         return render_template('output.html',values = CargoModel.query.all())
+
+
 
 
 if __name__ == '__main__':    

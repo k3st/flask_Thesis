@@ -3,28 +3,43 @@
 <head>
     <title>Crate items</title>
     <link rel="stylesheet" href="/static/style3.css">
+    <style>
+    .table_cargo {
+            color: white;
+        }
+
+    </style>
+    
+
 </head>
 <body>
     <div class="banner">
+    
         <div class="navbar">
             <ul>
                 <li>
                     <a href="{{url_for('index')}}">Home</a>
                 </li>
             </ul>
-        </div>        
+        </div>  
+        <div class="table_cargo">    
+        <p> TABLE FOR CARGO LOADING</p>
+        <table> 
+            <tr>
+                <th>NUMBER</th>
+            </tr>
+            <tr>
+                {% for item in result %}
+                <td> Cargo ID No. :'{{item.id}}', 
+                    CBM :'{{item.cbm}}', Profit :'{{item.profit}}'</td>                
+                
+                {% endfor %}
+            </tr>
+        </table>     
+        </div>          
+        
     </div>
-    <p> TABLE FOR CARGO LOADING</p>
-    <table> 
-        <tr>
-            <th>NUMBER</th>
-        </tr>
-        <tr>
-            {% for item in result %}
-            <td> 'CARGO': {{item}} </td>
-            {% endfor %}
-        </tr>
-    </table>
+    
 </body>
 
 </html>

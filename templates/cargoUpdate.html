@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Cargo List</title>
+    <title>UPDATE CargoList</title>
     <link rel="stylesheet" href="/static/style3.css">
 </head>
 <body>
@@ -27,14 +27,14 @@
                 <input type="integer" name="height" placeholder="height"> -->
                 
                 <p>CBM:</p>
-                <input type="integer" name="cbm">
+                <input type="integer" name="cbm" value="{{cargos.cbm}}">
 
                 <p>Price Per CBM:</p>
-                <input type="integer" name="price_per_weight">
+                <input type="integer" name="price_per_weight" value="{{cargos.price_per_weight}}">
 
 
                 <p>Profit:</p>
-                <input type="integer" name="profit" placeholder="profit">
+                <input type="integer" name="profit" value="{{cargos.profit}}">
                 
                 
                 <p></p>

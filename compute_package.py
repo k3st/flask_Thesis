@@ -36,28 +36,25 @@ class Node:
 
 
 # Initialize Variables
-new_W = []
-p = []
-w = []
-p_per_weight = []
+W = 20  #knapsack capacity 
+p = []      # profit
+w = []      # weight
+p_per_weight = []   
 
 
-def computeCargo(Cargo, db):
+def computeCargo(Cargo):
     volumes = Cargo.query.all()
     for i in volumes:
-        print(i.name)
-        print(i.profits)
-        print(i.pper)
-        w.append(i.name)
-        p.append(i.profits)
-        p_per_weight.append(i.pper)
+        print(i.cbm)
+        print(i.profit)
+        print(i.price_per_weight)
+        w.append(i.cbm)
+        p.append(i.profit)
+        p_per_weight.append(i.price_per_weight)
     print(w)
     global n
     n = len(w)
     print(n)
-    global W
-    for i in new_W:
-        W = i
     print(W)
     print(p)
     print(p_per_weight)
@@ -76,12 +73,12 @@ def computeCargo(Cargo, db):
 
     while pq.length != 0:
         v = pq.remove() #remove node with best bound
-        print("\nNode removed from pq.")
-        print("Priority Queue: ") 
+        # print("\nNode removed from pq.")
+        # print("Priority Queue: ") 
         pq.print_pqueue()
 
-        print("\nmaxprofit = ", maxprofit)
-        print("Parent Node: ")
+        # print("\nmaxprofit = ", maxprofit)
+        # print("Parent Node: ")
         print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
 
         if v.bound > maxprofit: #check if node is still promising
@@ -127,9 +124,9 @@ def computeCargo(Cargo, db):
                 pq.print_pqueue()
 
     print("\nEND maxprofit = ", maxprofit, "nodes generated = ", nodes_generated)
-    bubble_sort(bestitems)
-    print("bestitems = ", bestitems)
-    return render_template('optimize.html')
+    # bubble_sort(bestitems)
+    #print("bestitems = ", bestitems)
+    return maxprofit, nodes_generated, #bestitems
 
 
 

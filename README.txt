@@ -7,9 +7,12 @@ update func done, [in progress] testing delete function
 
 to run web server
 >> flask run
+>> flask --app app --debug run  
 
 </> guide {??}  
 https://www.askpython.com/python-modules/flask/flask-crud-application
+
+https://github.com/NateRice/0-1_Knapsack --algo reference
 
 
 # =====================	#

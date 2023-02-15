@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from compute_package import computeCargo
 from model import db,CargoModel
 #from compute_package import computeCargo  <---- old CargoModel
 
@@ -11,6 +12,9 @@ db.init_app(app)
 
 # migrate = Migrate(app,db)
 
+# Arrays declaration
+dataList = []
+
 @app.before_first_request
 def create_table():
     db.create_all()
@@ -21,7 +25,8 @@ def create_table():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect('/optimize')
+    # return render_template('index.html')
 
 @app.route('/buffer', methods=['GET','POST']) 
 def buffer(): ## NOT USED
@@ -31,8 +36,11 @@ def buffer(): ## NOT USED
 # Compute Using BnB Algorithm           -- not yet implemented
 @app.route('/optimize', methods=['GET','POST'])
 def Optimize():  
-    return
-    #computeCargo(CargoModel,db)
+    
+    results=computeCargo(CargoModel)
+    print("-"*25,"@"*10,"-"*25)
+    print(results)
+    return "END RESULT DONE"
 
 
 # [CREATE]                               ---  done
@@ -68,6 +76,10 @@ def showData():
     # data = CargoModel.query.order_by(CargoModel.date_created)
     result = CargoModel.query.all()
     # print("The DATABASE", result)
+    # if result.cargonumer not in dataList execute for loop --- for algorithm!!!
+    for item in result:
+        dataList.append(item.cbm)
+    print(dataList)
     return render_template('showData.html', result=result)
 
 ## ADD Single Retrieve FUNCTION             --- in progress
@@ -79,7 +91,7 @@ def GetSingleCargo(pkgID):
     return f"ERROR: --- \nCargo # {pkgID} does not exist. "
 
 
-# [UPDATE]                  -- ID not working? ? ?
+# [UPDATE]                  -- ID not working? ? ? 
 @app.route('/update/<int:pkgID>', methods = ['GET', 'POST'])
 def update(pkgID):
     cargos = CargoModel.query.filter_by(id=pkgID).first()
@@ -88,13 +100,12 @@ def update(pkgID):
             db.session.delete(cargos)
             db.session.commit()
 
-            cargos = CargoModel(
-            id = pkgID,
+            newCargos = CargoModel(
             price_per_weight = request.form['price_per_weight'],
             cbm = request.form['cbm'],
             profit = request.form['profit']
             )
-            db.session.add(cargos)
+            db.session.add(newCargos)
             db.session.commit()
             return redirect(f'/update/{pkgID}')
         return f"ERROR: --- \nCargo # {pkgID} does not exist. "
@@ -124,4 +135,4 @@ if __name__ == '__main__':
     app.run(host='localhost', port=5000)
     # db.drop_all()
     # db.create_all()    
-    app.run(debug = True)
+    app.run(debug = True)   

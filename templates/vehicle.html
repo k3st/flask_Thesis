@@ -73,30 +73,33 @@
       <ul>
         <li>
           <a href="{{url_for('index')}}">Home</a>
+        </li>        
+        <li>
+          <a href="{{url_for('cargo')}}">Add Cargo</a>
         </li>
         <li>
-          <a href="{{url_for('cargo')}}">Cargo</a>
-        </li>
+          <a href="{{url_for('showData')}}">Database Cargo</a>
+      </li>
       </ul>
     </div>
 
 
     <h1 style="color: white;"> CHOOSE VEHICLE </h1>
 
-    <form action="/cargo.html">
-      <div>
+    <form action='' method="POST">
+      <div >
         <section>
           <div class="row">
             <div class="column">
               <div class="columnpic">
-                <input type="radio" id="lim_Four" name="fav_language" value="Capacity of Four Pallets">
+                <input type="radio" id="lim_Four" name="capacity" value="Four Pallets">
                 <img src="/static/img/l300-van.jpg" />
               </div>
             </div>
 
             <div class="column">
               <div class="columnpic">
-                <input type="radio" id="lim_Ten" name="fav_language" value="Capacity of Ten Pallets">
+                <input type="radio" id="lim_Ten" name="capacity" value="Ten Pallets">
                 <img src="/static/img/6W.jpg" />
               </div>
             </div>
@@ -105,13 +108,13 @@
           <div class="row">
             <div class="column">
               <div class="columnpic">
-                <input type="radio" id="lim_Six" name="fav_language" value="Six Pallets">
+                <input type="radio" id="lim_Six" name="capacity" value="Six Pallets">
                 <img src="/static/img/closed van.jpg" />
               </div>
             </div>
             <div class="column">
               <div class="columnpic">
-                <input type="radio" id="lim_Twelve" name="fav_language" value="Capacity of Twelve Pallets">
+                <input type="radio" id="lim_Twelve" name="capacity" value="Twelve Pallets">
                 <img src="/static/img/10W.jpg" />
               </div>
             </div>
@@ -121,13 +124,20 @@
 
       <center>
         <div style="margin: auto;  padding-top: 15px;">
-          <input type="submit" value=" CONTINUE " onclick="displayRadioValue()">
+          <input type="submit" name="submit_button" onclick=displayRadioValue()>
         </div>
+        
       </center>
     </form>
 
 
   </div>
 </body>
+<script>
+  function displayRadioValue(){
+    return "DONE selecting vehicle"
+  }
+
+</script>
 
 </html>

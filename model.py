@@ -6,6 +6,7 @@ db = SQLAlchemy()
 class CargoModel(db.Model):    
     __tablename__ = "table"
     id = db.Column(db.Integer, primary_key=True)
+    # keyID = db.Column(db.Integer, primary_key=True)
     # name = db.Column(db.String(200), nullable=False)
 
     price_per_weight = db.Column(db.Integer, nullable=False)

@@ -13,7 +13,7 @@ db.init_app(app)
 # migrate = Migrate(app,db)
 
 # Arrays declaration
-dataList = []
+vehicleLimit = 0
 
 @app.before_first_request
 def create_table():
@@ -25,8 +25,7 @@ def create_table():
 
 @app.route('/')
 def index():
-    return redirect('/optimize')
-    # return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/buffer', methods=['GET','POST']) 
 def buffer(): ## NOT USED
@@ -37,7 +36,7 @@ def buffer(): ## NOT USED
 @app.route('/optimize', methods=['GET','POST'])
 def Optimize():  
     
-    results=computeCargo(CargoModel)
+    results=computeCargo(CargoModel, vehicleLimit)
     print("-"*25,"@"*10,"-"*25)
     print(results)
     return "END RESULT DONE"
@@ -63,23 +62,27 @@ def cargo():
 
 @app.route('/vehicle', methods=['GET','POST'])
 def vehicle():
+    if request.method =='GET':
+        return render_template ('vehicle.html')
+
     if request.method == 'POST':
-        climit = request.form['vehicle_limit']
-        db.session.add(climit)
-        db.session.commit()    
-    return render_template ('vehicle.html')
+        try:
+            if 'submit_button' in request.form:
+                vehicleLimit = request.form['capacity']
+                print("Vehicle Choice: ", vehicleLimit)
+        except Exception as err: 
+            print(err)
+            vehicleLimit = 13
+        return redirect ('/')
+
+    
     
 
 # [RETRIEVE] Show all data          -- 70% done  
 @app.route('/showData', methods=['GET','POST'])
 def showData():
     # data = CargoModel.query.order_by(CargoModel.date_created)
-    result = CargoModel.query.all()
-    # print("The DATABASE", result)
-    # if result.cargonumer not in dataList execute for loop --- for algorithm!!!
-    for item in result:
-        dataList.append(item.cbm)
-    print(dataList)
+    result = CargoModel.query.all()    
     return render_template('showData.html', result=result)
 
 ## ADD Single Retrieve FUNCTION             --- in progress

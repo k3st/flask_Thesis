@@ -44,8 +44,19 @@ p_per_weight = []
 
 def convertToInt(capacity):
     print("convertToInt() ",capacity)
-    if Capacity == "hello":
+    if capacity == "Four Pallets":
+        return 4    
+    elif capacity == "Six Pallets":
+        return 6
+    elif capacity == "Ten Pallets":
         return 10
+    elif capacity == "Twelve Pallets":
+        return 12
+    else:
+        print("ERROR RETURNING ... ")
+        return False
+    
+    
 
 
 

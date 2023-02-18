@@ -1,7 +1,9 @@
 -$-:  @git link  == >  https://github.com/k3st/flask_Thesis
 
-latest version   -- 02/11/2023 
-update func done, [in progress] testing delete function
+latest version   -- 02/18/2023
+cargo forms accepts only numbers,
+fix passing of knapsack capacity to algo,
+seperate the cargoID and primary ID {deferred} 
 
 
 
@@ -19,7 +21,11 @@ https://github.com/NateRice/0-1_Knapsack --algo reference
 #   Version History:	#
 # =====================	#
 
-	>> 02/10/2023 
+	>> 02/11/2023 
+update func done, [in progress] testing delete function
+
+
+				-- 02/10/2023 
 create func done, [in progress] fixed update and delete
 
 				-- 02/10/2023 
@@ -27,4 +33,4 @@ create func done
 
 				-- 02/08/2023 
 need create, update and delete function
- 1/22/2023
+ 				1/22/2023

@@ -36,13 +36,22 @@ class Node:
 
 
 # Initialize Variables
-vehicleSize = 6  #knapsack capacity, 6 Pallets is default
+   #knapsack capacity, 6 Pallets is default
 profit = []      # profit
 weight = []      # weight
 p_per_weight = []   
 
 
-def computeCargo(Cargo):
+def convertToInt(capacity):
+    print("convertToInt() ",capacity)
+    if Capacity == "hello":
+        return 10
+
+
+
+def computeCargo(Cargo, capacity):
+    global n
+
     volumes = Cargo.query.all()
     for index in volumes:
         print(index.cbm)
@@ -51,13 +60,15 @@ def computeCargo(Cargo):
         weight.append(index.cbm)
         profit.append(index.profit)
         p_per_weight.append(index.price_per_weight)
-    print(weight)
-    global n
+    print("weight: ",weight)
+    
     n = len(weight)
     print(n)
-    print(vehicleSize)
-    print(profit)
-    print(p_per_weight)
+    
+    vehicleSize = convertToInt(capacity)    
+    print("vehicleSize ", vehicleSize)
+    print("profit ", profit)
+    print("p_per_weight: ",p_per_weight)
     # Start of Algorithm
     nodesGenerated = 0
     prioQueue = Priority_Queue()
@@ -70,6 +81,8 @@ def computeCargo(Cargo):
 
 
     prioQueue.insert(v)
+
+    print("\n\nInitializing Algorithm.... ")
 
     while prioQueue.length != 0:
         v = prioQueue.remove() #remove node with best bound
@@ -123,6 +136,7 @@ def computeCargo(Cargo):
                 print("Priority Queue : ") 
                 prioQueue.print_pqueue()
 
+    print("\nAlgorithm DONE..... \n\n")
     print("\nEND maxProfit = ", maxProfit, "nodes generated = ", nodesGenerated)
     # bubble_sort(bestItems)
     #print("bestItems = ", bestItems)

@@ -1,23 +1,28 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from compute_package import computeCargo
-from model import db,CargoModel
-#from compute_package import computeCargo  <---- old CargoModel
+from model import  db,CargoModel, VehicleModel #VehicleModel not used; changed to session
+#from compute_package import computeCargo  <==== old CargoModel
 
 from flask_migrate import Migrate
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "A"
+
+#Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dataCargo.db'
 db.init_app(app)
 
 # migrate = Migrate(app,db)
 
 # Arrays declaration
-vehicleLimit = 0
+
 
 @app.before_first_request
 def create_table():
+    # db.drop_all()  #Uncomment to delete all data in database
     db.create_all()
+    session.pop("vehicleLimit", None)
 
 # ================================= #
 #       ROUTES for Functions        #
@@ -31,15 +36,52 @@ def index():
 def buffer(): ## NOT USED
     return render_template('buffer.html')
 
+@app.route('/vehicle', methods=['GET','POST'])
+def vehicle():
+    if request.method =='GET':
+        return render_template ('vehicle.html')
 
-# Compute Using BnB Algorithm           -- not yet implemented
+    if request.method == 'POST':
+        try:
+            if 'submit_button' in request.form:
+                vehicleLimit = request.form['capacity']                
+                print("Vehicle Choice: ", vehicleLimit)
+        except Exception as err: 
+            print(err)
+            vehicleLimit = 13
+        # newSize = VehicleModel(vehicleLimit=vehicleLimit)
+        # db.session.add(newSize)
+        # db.session.commit()
+        # vehicleSize = VehicleModel.query.all()
+        # print(vehicleSize)
+        session ["vehicleLimit"] = vehicleLimit
+        print("Data Inside Session => ", session ["vehicleLimit"] )
+        return redirect ('/')
+
+#                                       --- DONE
 @app.route('/optimize', methods=['GET','POST'])
-def Optimize():  
+def optimize():
+    if "vehicleLimit" in session:
+        vehicleLimit = session ["vehicleLimit"]
+        print("Condition True: ",vehicleLimit)
+        vehicleLimit = 20
+        #add error handling for computeCargo()
+        results=computeCargo(CargoModel,vehicleLimit)        
+        print("="*25,"@"*10,"="*25)
+        print(results)
+    else:
+        print('No vehicle selected, redirect to /vehicle')
+        return redirect('/vehicle')       
     
-    results=computeCargo(CargoModel, vehicleLimit)
-    print("-"*25,"@"*10,"-"*25)
-    print(results)
     return "END RESULT DONE"
+
+
+
+
+# = = = = = = = = = = = = = = = = = = = =  #
+# |         Create  Retrieve            |  #
+# |         Update  Delete              |  #
+# = = = = = = = = = = = = = = = = = = = =  #
 
 
 # [CREATE]                               ---  done
@@ -58,26 +100,7 @@ def cargo():
         db.session.add(cargos)
         db.session.commit()
         return redirect ('/showData')
-
-
-@app.route('/vehicle', methods=['GET','POST'])
-def vehicle():
-    if request.method =='GET':
-        return render_template ('vehicle.html')
-
-    if request.method == 'POST':
-        try:
-            if 'submit_button' in request.form:
-                vehicleLimit = request.form['capacity']
-                print("Vehicle Choice: ", vehicleLimit)
-        except Exception as err: 
-            print(err)
-            vehicleLimit = 13
-        return redirect ('/')
-
     
-    
-
 # [RETRIEVE] Show all data          -- 70% done  
 @app.route('/showData', methods=['GET','POST'])
 def showData():
@@ -134,8 +157,6 @@ def delete(id):
 
 
 
-if __name__ == '__main__':    
+if __name__ == "__main__":    
     app.run(host='localhost', port=5000)
-    # db.drop_all()
-    # db.create_all()    
     app.run(debug = True)   

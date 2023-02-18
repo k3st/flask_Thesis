@@ -15,7 +15,7 @@ class CargoModel(db.Model):
     # date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self,price_per_weight,cbm,profit):
-        #self.id = id  # autocreate bc primary_key
+        # self.id = id 
         #self.name = name        
         self.price_per_weight = price_per_weight
         self.cbm = cbm 
@@ -25,3 +25,18 @@ class CargoModel(db.Model):
     #Function to return
     def __repr__(self) -> str:
         return '<Name %r>' % self.id 
+
+
+
+
+class VehicleModel(db.Model):
+    print("deferred")
+    __tablename__ = "vehicle"
+    keyID = db.Column(db.Integer, primary_key=True)
+    # vehicleLimit = db.Column(db.Integer)
+
+    # def __init__(self, vehicleLimit):
+    #     self.vehicleLimit = vehicleLimit
+
+    # def __repr__(self) -> str:
+    #     return '<Content %r>' % self.vehicleLimit 

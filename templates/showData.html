@@ -4,10 +4,27 @@
     <title>Crate items</title>
     <link rel="stylesheet" href="/static/style3.css">
     <style>
+    body{
+        color: white;
+        text-align: center;
+    }
     .table_cargo {
-            color: white;
-        }
-
+        color: white;
+    }
+    table, th, td {
+        border: 2px solid yellowgreen;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 30px;
+        padding-right: 40px;
+    }    
+    table.center{
+        margin-left: auto;
+        margin-right: auto;
+    }
     </style>
     
 
@@ -26,23 +43,45 @@
             </ul>
         </div>  
         <div class="table_cargo">    
-        <p> TABLE FOR CARGO LOADING</p>
-        <table> 
+        <h1 style="text-align: center;"> TABLE FOR CARGO LOADING</h1>
+        <br>
+        <br>
+        <table class="center"> 
             <tr>
-                <th>NUMBER</th>
+                <th> ID </th>
+                <th>    CBM     </th>
+                <th>  PROFIT  </th>
+            </tr>            
+            {% for item in result %}  
+            <tr>                          
+                <td>'{{item.id}}'</td>
+                <td>'{{item.cbm}}'</td> 
+                <td>'{{item.profit}}'</td>                 
             </tr>
-            <tr>
+            {% endfor %}
+
+            <!-- <tr>
                 {% for item in result %}
                 <td> Cargo ID No. :'{{item.id}}', 
                     CBM :'{{item.cbm}}', Profit :'{{item.profit}}'</td>                
                 
                 {% endfor %}
-            </tr>
+            </tr> -->
         </table>     
-        </div>          
-        
-    </div>
-    
+        </div> 
+        <br>
+        <br>
+        <div class="Item-Form">
+                <p> Select Single Data for more Actions: (UPDATE DELETE)</p>
+            <form action='' method="POST">                
+                <label>CARGO ID :</label> 
+                <input type="number" name="pkgID" min="0" max="999999" ondrop="return false;" onpaste="return false;">
+                <div class="choose">                    
+                    <button type="submit" name="submit_button" value="update">Update</button>                    
+                    <button type="submit" name="submit_button" value="delete">Delete</button>
+                </div>
+            </form> 
+        </div>             
+    </div>    
 </body>
-
 </html>

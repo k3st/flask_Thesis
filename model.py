@@ -15,7 +15,7 @@ class CargoModel(db.Model):
     # date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self,price_per_weight,cbm,profit):
-        # self.id = id 
+        #self.id = id 
         #self.name = name        
         self.price_per_weight = price_per_weight
         self.cbm = cbm 

@@ -48,12 +48,6 @@ def vehicle():
                 print("Vehicle Choice: ", vehicleLimit)
         except Exception as err: 
             print(err)
-            vehicleLimit = 13
-        # newSize = VehicleModel(vehicleLimit=vehicleLimit)
-        # db.session.add(newSize)
-        # db.session.commit()
-        # vehicleSize = VehicleModel.query.all()
-        # print(vehicleSize)
         session ["vehicleLimit"] = vehicleLimit
         print("Data Inside Session => ", session ["vehicleLimit"] )
         return redirect ('/')
@@ -105,8 +99,17 @@ def cargo():
 @app.route('/showData', methods=['GET','POST'])
 def showData():
     # data = CargoModel.query.order_by(CargoModel.date_created)
-    result = CargoModel.query.all()    
-    return render_template('showData.html', result=result)
+    if request.method =='GET':
+        result = CargoModel.query.all()    
+        return render_template('showData.html', result=result)
+    if request.method == 'POST':
+        pkgID = request.form['pkgID']
+        if request.form['submit_button'] == "update":
+            return redirect (f'/update/{pkgID}')
+        elif request.form['submit_button'] == "delete":
+            return redirect (f'/delete/{pkgID}')
+        else:
+            print("no function")
 
 ## ADD Single Retrieve FUNCTION             --- in progress
 @app.route('/showSingleData/<int:pkgID>')

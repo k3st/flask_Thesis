@@ -1,2 +1,3 @@
 instance/cargo.db
 __pycache__/
+instance/dataCargo.db

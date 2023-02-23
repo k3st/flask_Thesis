@@ -3,14 +3,16 @@ from compute_package import computeCargo
 from model import  db,CargoModel, VehicleModel #VehicleModel not used; changed to session
 #from compute_package import computeCargo  <==== old CargoModel
 
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "A"
 
 #Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dataCargo.db'
+urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = urlForDB
 db.init_app(app)
 
 # migrate = Migrate(app,db)

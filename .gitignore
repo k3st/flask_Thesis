@@ -1,3 +1,6 @@
-instance/cargo.db
 __pycache__/
+venv/
+instance/
+instance/cargo.db
 instance/dataCargo.db
+

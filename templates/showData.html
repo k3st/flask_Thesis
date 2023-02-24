@@ -9,22 +9,37 @@
         text-align: center;
     }
     .table_cargo {
-        color: white;
+        height: 45%;
+        overflow: hidden; 
+        overflow-y: scroll;
+        color: white;        
     }
-    table, th, td {
+    table, th, td {        
         border: 2px solid yellowgreen;
-        border-collapse: collapse;
+        border-collapse: collapse;               
     }
     th, td {
         padding-top: 10px;
         padding-bottom: 10px;
         padding-left: 30px;
         padding-right: 40px;
+        
     }    
-    table.center{
+    table.center{      
         margin-left: auto;
         margin-right: auto;
     }
+    .Item-Form {
+        position:relative;
+        margin-top: 8%;
+        margin-left: 50%;
+    }
+    /* td.whatever
+{
+    max-width: 150px;
+    max-height: 150px;
+    overflow: hidden;
+} */
     </style>
     
 
@@ -40,10 +55,14 @@
                 <li>
                     <a href="{{url_for('optimize')}}">Optimize</a>
                 </li>
+                <li></li>
+                <li>
+                    <a href="{{url_for('cargo')}}">Add Cargo</a>
+                </li>
             </ul>
         </div>  
-        <div class="table_cargo">    
         <h1 style="text-align: center;"> TABLE FOR CARGO LOADING</h1>
+        <div class="table_cargo">            
         <br>
         <br>
         <table class="center"> 
@@ -59,20 +78,11 @@
                 <td>'{{item.profit}}'</td>                 
             </tr>
             {% endfor %}
-
-            <!-- <tr>
-                {% for item in result %}
-                <td> Cargo ID No. :'{{item.id}}', 
-                    CBM :'{{item.cbm}}', Profit :'{{item.profit}}'</td>                
-                
-                {% endfor %}
-            </tr> -->
         </table>     
-        </div> 
-        <br>
+        </div>
         <br>
         <div class="Item-Form">
-                <p> Select Single Data for more Actions: (UPDATE DELETE)</p>
+            <p> Select Single Data for more Actions: (UPDATE DELETE)</p>
             <form action='' method="POST">                
                 <label>CARGO ID :</label> 
                 <input type="number" name="pkgID" min="0" max="999999" ondrop="return false;" onpaste="return false;">
@@ -81,7 +91,8 @@
                     <button type="submit" name="submit_button" value="delete">Delete</button>
                 </div>
             </form> 
-        </div>             
+        </div>   
+                   
     </div>    
 </body>
 </html>

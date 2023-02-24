@@ -24,14 +24,13 @@ class CargoModel(db.Model):
  
     #Function to return
     def __repr__(self) -> str:
-        return '<Name %r>' % self.id 
+        return '<CargoID: %r>' % self.id 
 
 
 
 
-class VehicleModel(db.Model):
-    print("deferred")
-    __tablename__ = "vehicle"
+class TempModel(db.Model):
+    __tablename__ = "temp"
     keyID = db.Column(db.Integer, primary_key=True)
     # vehicleLimit = db.Column(db.Integer)
 

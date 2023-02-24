@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>UPDATE CargoList</title>
-    <link rel="stylesheet" href="/static/style3.css">
+    <link rel="stylesheet" href="/static/style4.css">
     <style>
         body{
             color: white;
@@ -27,7 +27,7 @@
         <h1> UPDATE FUNCTION</h1>
         <div class="Item-Form">
             <h1>Item form</h1>
-            <form action='' method="POST">
+            <form action='' method="POST" onsubmit=displayAlert()>
                 <!-- <p>Length:</p>
                 <input type="integer" name="length" placeholder="length">
                 <p>Width:</p>
@@ -35,15 +35,15 @@
                 <p>Height</p>
                 <input type="integer" name="height" placeholder="height"> -->
                 
-                <p>CBM:</p>
-                <input type="integer" name="cbm" value="{{cargos.cbm}}">
+                <p>CBM: </p>
+                <input type="number" name="cbm" placeholder="{{cargos.cbm}}"  min="0" max="999999" ondrop="return false;" onpaste="return false;">
 
                 <p>Price Per CBM:</p>
-                <input type="integer" name="price_per_weight" value="{{cargos.price_per_weight}}">
+                <input type="number" name="price_per_weight" placeholder="{{cargos.price_per_weight}}"min="0" max="999999" ondrop="return false;" onpaste="return false;">
 
 
                 <p>Profit:</p>
-                <input type="integer" name="profit" value="{{cargos.profit}}">
+                <input type="number" name="profit" placeholder="{{cargos.profit}}" min="0" max="999999" ondrop="return false;" onpaste="return false;">
                 
                 
                 <p></p>
@@ -52,5 +52,13 @@
         </div>
     </div>
 </body>
+<script>
+  
+
+  function displayAlert(){
+    alert("UPDATE SUCCESS")     
+  }
+
+</script>
 
 </html>

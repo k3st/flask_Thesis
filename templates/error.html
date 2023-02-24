@@ -1,6 +1,27 @@
-<div class="container">
-    <h1>Yow Yow Yow</h1>
-    <p> Every request must be answered. </p>
-    {{ error_statement}}
-    <br/><br/>
+<html>
+<head>
+    <title>ERROR 404 FOUND</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <ul>
+                <li>
+                    <a href="{{url_for('index')}}">Home</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1>ERROR 404 FOUND</h1>
+            <br>
+            <p>{{err}}</p>
+        </div>
     </div>
+
+</body>
+
+</html>
+
+

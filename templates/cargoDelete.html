@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UPDATE CargoList</title>
+    <link rel="stylesheet" href="/static/style4.css">
+    <style>
+        body{
+            color: white;
+            text-align: center;
+        }
+        
+    </style>
+
+
+    
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar" >
+           <ul>
+                 <li>
+                    <a href="{{url_for('index')}}">Home</a>
+                </li>
+
+                <br>
+                
+            </ul>
+        </div>
+        
+        <div class="Item-Form">
+            <h1> DELETE FUNCTION</h1>
+                               
+            <form action='' method="POST" onsubmit=displayAlert()> 
+                <p>Press Button to Confirm the Delete</p>                                                       
+                <button type="submit" value="Submit">Confirm Delete</button>                                  
+            </form>
+            <br>
+                <br>
+                <br>
+                <br>
+            <p> "Click Home" to cancel </p>          
+        </div>
+    </div>
+</body>
+<script>
+  
+
+  function displayAlert(){
+    alert("DELETE SUCCESS")     
+  }
+
+</script>
+
+</html>

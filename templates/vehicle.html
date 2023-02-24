@@ -56,6 +56,11 @@
       max-width: 200px;
     }
 
+    /* input[type="radio"]{
+      width: 20px;
+      height: 20px;
+    }  */
+
     input[type=submit] {
       border: none;
       padding: 16px 32px;
@@ -89,7 +94,8 @@
 
     <h1 style="color: white;"> CHOOSE VEHICLE </h1>
 
-    <form action='' method="POST">
+    <form action='' method="POST" >
+ 
       <div >
         <section>
           <div class="row">
@@ -137,8 +143,17 @@
   </div>
 </body>
 <script>
+  
+
   function displayRadioValue(){
-    return "DONE selecting vehicle"
+    var checked_radio = document.querySelector('input[name = "capacity"]:checked');
+    if(checked_radio != null){  //Test if something was checked      
+      alert("Vehicle Selected."); //Alert the value of the checked.
+      return
+    } else {      
+      alert('Nothing checked. Please Choose a Vehicle'); //Alert, nothing was checked.
+      
+    }    
   }
 
 </script>

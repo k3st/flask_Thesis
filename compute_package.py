@@ -35,11 +35,7 @@ class Node:
         self.items = []
 
 
-# Initialize Variables
-   #knapsack capacity, 6 Pallets is default
-profit = []      # profit
-weight = []      # weight
-p_per_weight = []   
+
 
 
 def convertToInt(capacity):
@@ -58,11 +54,17 @@ def convertToInt(capacity):
     
     
 
+n = 0
+vehicleSize = 0
 
+# Initialize Variables
+#knapsack capacity, 6 Pallets is default
+profit = []      # profit
+weight = []      # weight
+p_per_weight = []   
 
 def computeCargo(Cargo, capacity):
-    global n
-
+       
     volumes = Cargo.query.all()
     for index in volumes:
         print(index.cbm)
@@ -71,11 +73,11 @@ def computeCargo(Cargo, capacity):
         weight.append(index.cbm)
         profit.append(index.profit)
         p_per_weight.append(index.price_per_weight)
-    print("weight: ",weight)
-    
+    print("weight: ",weight)    
+    global n 
+    global vehicleSize
     n = len(weight)
-    print(n)
-    
+    print(n)      
     vehicleSize = convertToInt(capacity)    
     print("vehicleSize ", vehicleSize)
     print("profit ", profit)
@@ -103,7 +105,7 @@ def computeCargo(Cargo, capacity):
 
         # print("\nmaxprofit = ", maxProfit)
         # print("Parent Node: ")
-        print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
+        ### print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
 
         if v.bound > maxProfit: #check if node is still promising
             #set u to the child that includes the next item
@@ -115,43 +117,48 @@ def computeCargo(Cargo, capacity):
             #take v's list and add u's list
             u.items = v.items.copy()
             u.items.append(u.level) # adds next item
-            print("child that includes the next item: ")
-            print("Child 1:")
-            print("u.level = ", u.level, "u.profit = ", u.profit, "u.weight = ", u.weight)
-            print("u.items = ", u.items)
+            # print("child that includes the next item: ")
+            # print("Child 1:")
+            # print("u.level = ", u.level, "u.profit = ", u.profit, "u.weight = ", u.weight)
+            # print("u.items = ", u.items)
             if u.weight <= vehicleSize and u.profit > maxProfit: 
+                
                 #update maxProfit
                 maxProfit = u.profit
-                print("\nmaxprofit updated = ", maxProfit)
+                # print("\nmaxprofit updated = ", maxProfit)
                 bestItems = u.items
-                print("bestItems = ", bestItems)
+                # print("bestItems = ", bestItems)
             u.bound = get_bound(u)
-            print("u.bound = ", u.bound)
+            ##print("vehicleSize ", vehicleSize)
+            ##print("u.bound = ", u.bound)
             if u.bound > maxProfit:
                 prioQueue.insert(u)
-                print("Node u1 inserted into prioQueue.")
-                print("Priority Queue : ") 
+                # print("Node u1 inserted into prioQueue.")
+                # print("Priority Queue : ") 
                 prioQueue.print_pqueue()
             #set u to the child that does not include the next item
             u2 = Node(u.level, v.profit, v.weight)
             nodesGenerated+=1
             u2.bound = get_bound(u2)
             u2.items = v.items.copy()
-            print("child that doesn't include the next item: ")
-            print("Child 2:")
-            print("u2.level = ", u2.level, "u2.profit = ", u2.profit, "u2.weight = ", u2.weight, "u2.bound = ", u2.bound)
-            print("u2.items = ", u2.items)
+            # print("child that doesn't include the next item: ")
+            # print("Child 2:")
+            # print("u2.level = ", u2.level, "u2.profit = ", u2.profit, "u2.weight = ", u2.weight, "u2.bound = ", u2.bound)
+            # print("u2.items = ", u2.items)
             if u2.bound > maxProfit:
                 prioQueue.insert(u2)
-                print("Node u2 inserted into prioQueue.")
-                print("Priority Queue : ") 
+                # print("Node u2 inserted into prioQueue.")
+                # print("Priority Queue : ") 
                 prioQueue.print_pqueue()
-
+    
     print("\nAlgorithm DONE..... \n\n")
+    print("vehicleSize ", vehicleSize)
     print("\nEND maxProfit = ", maxProfit, "nodes generated = ", nodesGenerated)
-    # bubble_sort(bestItems)
-    #print("bestItems = ", bestItems)
-    return maxProfit, nodesGenerated, #bestItems
+    bubble_sort(bestItems)
+    print("bestItems = ", bestItems)
+
+    profit.clear(),weight.clear(),p_per_weight.clear()
+    return maxProfit, nodesGenerated, bestItems
 
 
 

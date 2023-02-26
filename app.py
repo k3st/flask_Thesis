@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.secret_key = "A"
 
 #Database
-urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
-# urlForDB = 'sqlite:///dataCargo.db'  #use if local database
+# urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
+urlForDB = 'sqlite:///dataCargo.db'  #use if local database
 
 app.config['SQLALCHEMY_DATABASE_URI'] = urlForDB
 db.init_app(app)
@@ -27,13 +27,38 @@ def create_table():
     db.create_all()
     session.pop("vehicleLimit", None)
 
+
+@app.route('/login', methods=['GET','POST'])
+def loginPage():
+    if request.method == 'POST':
+        global userInfo
+        userName = request.form['emailUser']    
+        userPass = request.form['passwordUser']   
+        if userName == "email@email.com" and userPass == "Test123!":
+            print("Password match")
+            userInfo = "CredentialVerified"
+            session ["currUser"] = userInfo
+            return redirect(url_for('index'))
+        return render_template('userLogin.html')
+    return render_template('userLogin.html')
+
+@app.route('/logout', methods=['GET','POST'])
+def logoutUser():
+    print("Current User has logout.")
+    session.pop("currUser", None)
+    return redirect(url_for('index'))
+    
+
+ 
 # ================================= #
 #       ROUTES for Functions        #
 # ================================= #
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if "currUser" in session:
+        return render_template('index.html')
+    return redirect(url_for('loginPage'))
 
 @app.route('/buffer', methods=['GET','POST']) 
 def buffer(): ## NOT USED
@@ -41,9 +66,13 @@ def buffer(): ## NOT USED
 
 @app.route('/vehicle', methods=['GET','POST'])
 def vehicle():
-    if request.method =='GET':
-        return render_template ('vehicle.html')
-
+    if not"currUser" in session:
+        if request.method =='GET':
+            return render_template ('vehicle.html')
+    
+    # if request.method =='GET':
+    #     return render_template ('vehicle.html')
+    # if not"currUser" in session: ##
     if request.method == 'POST':
         global vehicleLimit
         try:
@@ -55,7 +84,8 @@ def vehicle():
                 return redirect ('/showData')                               
         except Exception as err: 
             print(err)
-            return redirect ('/vehicle')  
+            return redirect ('/vehicle')
+    return redirect(url_for('loginPage'))  
 
 #                                       --- DONE
 @app.route('/optimize', methods=['GET','POST'])

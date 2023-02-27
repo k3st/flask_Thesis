@@ -64,6 +64,10 @@ weight = []      # weight
 p_per_weight = []   
 
 def computeCargo(Cargo, capacity):
+    if not weight.count == 0:
+        profit.clear()
+        weight.clear()
+        p_per_weight.clear()
        
     volumes = Cargo.query.all()
     for index in volumes:
@@ -157,9 +161,9 @@ def computeCargo(Cargo, capacity):
     bubble_sort(bestItems)
     print("bestItems = ", bestItems)
 
-    profit.clear(),weight.clear(),p_per_weight.clear()
-    return maxProfit, nodesGenerated, bestItems
-
+    # profit.clear(),weight.clear(),p_per_weight.clear()
+    data = {'Profit':maxProfit, 'Items':bestItems}
+    return data
 
 
 

@@ -69,13 +69,13 @@
             <tr>
                 <th> ID </th>
                 <th>    CBM     </th>
-                <th>  PROFIT  </th>
+                <th>  PROFIT (pesos)  </th>
             </tr>            
             {% for item in result %}  
             <tr>                          
-                <td>'{{item.id}}'</td>
-                <td>'{{item.cbm}}'</td> 
-                <td>'{{item.profit}}'</td>                 
+                <td>{{item.id}}</td>
+                <td>{{item.cbm}}</td> 
+                <td>₱ {{item.profit}}</td>                 
             </tr>
             {% endfor %}
         </table>     

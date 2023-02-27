@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.secret_key = "A"
 
 #Database
-# urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
-urlForDB = 'sqlite:///dataCargo.db'  #use if local database
+urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
+# urlForDB = 'sqlite:///dataCargo.db'  #use if local database
 
 app.config['SQLALCHEMY_DATABASE_URI'] = urlForDB
 db.init_app(app)
@@ -23,7 +23,7 @@ db.init_app(app)
 
 @app.before_first_request
 def create_table():
-    # db.drop_all()  #Uncomment to delete all data in database
+    db.drop_all()  #Uncomment to delete all data in database
     db.create_all()
     session.pop("vehicleLimit", None)
 
@@ -66,14 +66,11 @@ def buffer(): ## NOT USED
 
 @app.route('/vehicle', methods=['GET','POST'])
 def vehicle():
-    if not"currUser" in session:
-        if request.method =='GET':
-            return render_template ('vehicle.html')
-    
-    # if request.method =='GET':
-    #     return render_template ('vehicle.html')
-    # if not"currUser" in session: ##
-    if request.method == 'POST':
+    if not "currUser" in session:
+        return redirect(url_for('loginPage'))  
+    if request.method =='GET':
+        return render_template ('vehicle.html')    
+    elif request.method == 'POST':
         global vehicleLimit
         try:
             if 'submit_button' in request.form:
@@ -85,19 +82,21 @@ def vehicle():
         except Exception as err: 
             print(err)
             return redirect ('/vehicle')
-    return redirect(url_for('loginPage'))  
+    
 
 #                                       --- DONE
 @app.route('/optimize', methods=['GET','POST'])
 def optimize():
+    if not "currUser" in session:
+        return redirect(url_for('loginPage'))
     if "vehicleLimit" in session:
         vehicleLimit = session ["vehicleLimit"]
         print("Condition True: ",vehicleLimit)
         try:
-            results=computeCargo(CargoModel,vehicleLimit)        
+            # results=computeCargo(CargoModel,vehicleLimit)        
             print("="*25,"@"*10,"="*25)
-            print(results)
-            return render_template('optimize.html',data = results)
+            # print(results)
+            return render_template('optimize.html', data = computeCargo(CargoModel,vehicleLimit) )
         except Exception as err: 
             print(err)
             return render_template('error.html', err=err)
@@ -133,6 +132,8 @@ def getTrial(pkgID):
 # [CREATE]                               ---  done
 @app.route('/cargo/create' , methods=['GET','POST'])
 def cargo():
+    if not "currUser" in session:
+        return redirect(url_for('loginPage'))
     if request.method == 'GET':
         return render_template('cargo.html')
     
@@ -150,6 +151,8 @@ def cargo():
 # [RETRIEVE] Show all data          -- 70% done 
 @app.route('/showData', methods=['GET','POST'])
 def showData():
+    if not "currUser" in session:
+        return redirect(url_for('loginPage'))
     # data = CargoModel.query.order_by(CargoModel.date_created)
     if request.method =='GET':
         result = CargoModel.query.all()    
@@ -184,7 +187,9 @@ def GetSingleCargo(pkgID):
 
 # [UPDATE]                  -- DONE with error handl
 @app.route('/update/<int:pkgID>', methods = ['GET', 'POST'])
-def update(pkgID):  
+def update(pkgID): 
+    if not "currUser" in session:
+        return redirect(url_for('loginPage')) 
     cargos = db.get_or_404(CargoModel,pkgID)
     if request.method == 'POST':
         # try:
@@ -210,6 +215,8 @@ def update(pkgID):
 # [DELETE]  -                   -- DONE with error handl
 @app.route('/delete/<int:pkgID>', methods = ['GET', 'POST'])
 def delete(pkgID):
+    if not "currUser" in session:
+        return redirect(url_for('loginPage'))
     cargos = db.get_or_404(CargoModel,pkgID)    
     if request.method == 'POST':
         if cargos:

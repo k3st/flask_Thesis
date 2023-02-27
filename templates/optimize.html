@@ -10,15 +10,36 @@
             color: white;
             text-align: center;
         }
+        p{
+            font-size: large;
+            padding-top: 1%;
+        }
+        .result{
+            font-weight: bold;
+            font-size: larger;
+            color: cornsilk;
+        }
     </style>
 </head>
 
 <body>
     <div class="banner">
-        <div class="title">
-                <h1 style="padding-top: 15%;">THE DATA RESULTS: {{data}}</h1>
-        </div>
+        <center>
+            <h1 style="padding-top: 15%; padding-bottom: 2%;">THE DATA RESULTS</h1>
+                          
+                <p> The algorithm has recommended to ship the items  </p>
+                <p class="result"> > >	&nbsp;  {{data.Items}} </p>
+                <p>Following the recommended pattern would generate the current shipment around </p>
+                <p class="result"> > >	&nbsp;    ₱ {{data.Profit}} pesos.</p>
+            
+            
+        </center>
+        <div class="text-block">  </div>
+        
     </div>
+
+    
+    
 </body>
 
 </html>

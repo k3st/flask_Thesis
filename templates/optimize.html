@@ -27,8 +27,15 @@
         <center>
             <h1 style="padding-top: 15%; padding-bottom: 2%;">THE DATA RESULTS</h1>
                           
-                <p> The algorithm has recommended to ship the items  </p>
-                <p class="result"> > >	&nbsp;  {{data.Items}} </p>
+                <p> The algorithm has recommended to ship the items.  {{data.Items}} </p>
+                <p class="result"> > >
+                    
+                    {% for i in data.Items %}  
+          
+                    &nbsp;  Cargo ID# {{data.Items[i-1]}},
+
+                    {% endfor %}
+                </p>
                 <p>Following the recommended pattern would generate the current shipment around </p>
                 <p class="result"> > >	&nbsp;    ₱ {{data.Profit}} pesos.</p>
             

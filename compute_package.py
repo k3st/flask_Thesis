@@ -34,41 +34,41 @@ class Node:
         self.weight = weight
         self.items = []
 
-
-
-
-
 def convertToInt(capacity):
     print("convertToInt() ",capacity)
-    if capacity == "Four Pallets":
-        return 4    
-    elif capacity == "Six Pallets":
-        return 6
-    elif capacity == "Ten Pallets":
-        return 10
-    elif capacity == "Twelve Pallets":
-        return 12
+    if capacity == "4 CBM":
+        return 4        # 4.6 CBM  / 162.447 CBF (cubic foot)
+    elif capacity == "12 CBM":
+        return 12       # 12.2 CBM / 430.8389 CBF (cubic foot)
+    elif capacity == "21 CBM":
+        return 21       # 21.4 CBM / 755.7339 CBF (cubic foot)
+    elif capacity == "55 CBM":
+        return 55       # 55.1 CBM / 1945.838 CBF (cubic foot)
     else:
         print("ERROR RETURNING ... ")
         return False
     
-    
 
-n = 0
-vehicleSize = 0
+print("run initial")    
 
 # Initialize Variables
 #knapsack capacity, 6 Pallets is default
-profit = []      # profit
-weight = []      # weight
-p_per_weight = []   
+profit = [0]      # profit
+weight = [0]      # weight
+p_per_weight = [0]   
 
-def computeCargo(Cargo, capacity):
-    if not weight.count == 0:
+def computeCargo(Cargo, capacity):  
+    global vehicleSize,n
+    if len(weight) > 0:
         profit.clear()
         weight.clear()
         p_per_weight.clear()
-       
+
+    weight.append(0)
+    profit.append(0)
+    p_per_weight.append(0)
+    
+
     volumes = Cargo.query.all()
     for index in volumes:
         print(index.cbm)
@@ -77,12 +77,12 @@ def computeCargo(Cargo, capacity):
         weight.append(index.cbm)
         profit.append(index.profit)
         p_per_weight.append(index.price_per_weight)
-    print("weight: ",weight)    
-    global n 
-    global vehicleSize
+         
+    vehicleSize = convertToInt(capacity)
     n = len(weight)
-    print(n)      
-    vehicleSize = convertToInt(capacity)    
+
+    print("Total Items: ", n)    
+    print("weight: ",weight)    
     print("vehicleSize ", vehicleSize)
     print("profit ", profit)
     print("p_per_weight: ",p_per_weight)
@@ -92,11 +92,14 @@ def computeCargo(Cargo, capacity):
 
     v = Node(-1, 0, 0) # v initialized to be the root with level = 0, profit = $0, weight = 0
     nodesGenerated+=1
+    
     maxProfit = 0 # maxProfit initialized to $0
     v.bound = get_bound(v)
+    print(":asdas:")
     #print("v.bound = ", v.bound)
 
 
+    
     prioQueue.insert(v)
 
     print("\n\nInitializing Algorithm.... ")
@@ -112,6 +115,7 @@ def computeCargo(Cargo, capacity):
         ### print("v.level = ", v.level, "v.profit = ", v.profit, "v.weight = ", v.weight, "v.bound = ", v.bound, "v.items = ", v.items)
 
         if v.bound > maxProfit: #check if node is still promising
+            print("running")
             #set u to the child that includes the next item
             u = Node(0, 0, 0)
             nodesGenerated+=1
@@ -131,7 +135,7 @@ def computeCargo(Cargo, capacity):
                 maxProfit = u.profit
                 # print("\nmaxprofit updated = ", maxProfit)
                 bestItems = u.items
-                # print("bestItems = ", bestItems)
+                print("bestItems!! = ", bestItems)
             u.bound = get_bound(u)
             ##print("vehicleSize ", vehicleSize)
             ##print("u.bound = ", u.bound)
@@ -154,8 +158,9 @@ def computeCargo(Cargo, capacity):
                 # print("Node u2 inserted into prioQueue.")
                 # print("Priority Queue : ") 
                 prioQueue.print_pqueue()
+            print("\nAlgorithm DONE..... \n\n")
     
-    print("\nAlgorithm DONE..... \n\n")
+   
     print("vehicleSize ", vehicleSize)
     print("\nEND maxProfit = ", maxProfit, "nodes generated = ", nodesGenerated)
     bubble_sort(bestItems)

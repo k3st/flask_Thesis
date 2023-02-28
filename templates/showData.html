@@ -62,6 +62,11 @@
             </ul>
         </div>  
         <h1 style="text-align: center;"> TABLE FOR CARGO LOADING</h1>
+
+        {% if session['vehicleLimit'] %}
+        <h3 style="padding-top: 1%; color:cornsilk"> Current Vehicle Size: '{{session ["vehicleLimit"]}}'</h2>
+        {% endif %}
+        
         <div class="table_cargo">            
         <br>
         <br>

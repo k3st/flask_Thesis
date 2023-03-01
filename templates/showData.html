@@ -14,10 +14,22 @@
         overflow-y: scroll;
         color: white;        
     }
+    /* Hide scrollbar for IE, Edge and Firefox */
+
+    .table_cargo::-webkit-scrollbar {
+    display: none;
+    }    
+    .table_cargo {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    
     table, th, td {        
         border: 2px solid yellowgreen;
         border-collapse: collapse;               
-    }
+    }      
     th, td {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -33,13 +45,9 @@
         position:relative;
         margin-top: 8%;
         margin-left: 50%;
+        width: 20%;
+        height: 15%;
     }
-    /* td.whatever
-{
-    max-width: 150px;
-    max-height: 150px;
-    overflow: hidden;
-} */
     </style>
     
 

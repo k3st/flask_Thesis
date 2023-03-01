@@ -29,6 +29,10 @@
     
                     <p>Password:</p>
                     <input type="password" name="passwordUser" placeholder="Enter Password">
+
+                    {% for message in get_flashed_messages() %}
+                    <p style="font-size:medium; color: red;">Error    : {{ message }}</p>
+                    {% endfor %}
     
                     <p></p>
                     <button type="submit" value="Submit">Confirm</button>

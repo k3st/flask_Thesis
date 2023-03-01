@@ -34,11 +34,12 @@ def loginPage():
         global userInfo
         userName = request.form['emailUser']    
         userPass = request.form['passwordUser']   
-        if userName == "email@email.com" and userPass == "Test123!":
+        if userName == "email@email.com" and userPass == "Test123!":  # CHANGE THIS BEFORE FINALS
             print("Password match")
             userInfo = "CredentialVerified"
             session ["currUser"] = userInfo
-            return redirect(url_for('index'))
+            return redirect(url_for('index'))        
+        flash('Invalid email address or Password.') 
         return render_template('userLogin.html')
     return render_template('userLogin.html')
 
@@ -46,6 +47,7 @@ def loginPage():
 def logoutUser():
     print("Current User has logout.")
     session.pop("currUser", None)
+    session.pop("vehicleLimit", None)
     return redirect(url_for('index'))
     
 
@@ -146,7 +148,7 @@ def cargo():
         #volume = 0.01 * (int(length) * int(height) * int(width))         
         db.session.add(cargos)
         db.session.commit()
-        return redirect ('/showData')
+        return redirect('/cargo/create')
     
 # [RETRIEVE] Show all data          -- 70% done 
 @app.route('/showData', methods=['GET','POST'])

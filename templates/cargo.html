@@ -24,23 +24,17 @@
         </div>
         <div class="Item-Form">
             <h1>Item form</h1>
-            <form action='' method="POST">
-                <!-- <p>Length:</p>
-                <input type="integer" name="length" placeholder="length">
-                <p>Width:</p>
-                <input type="integer" name="width" placeholder="width">
-                <p>Height</p>
-                <input type="integer" name="height" placeholder="height"> -->
+            <form action='' method="POST" onsubmit=displayAlert()>
                 
-                <p>CBM:</p>
-                <input type="number" name="cbm" placeholder="Enter CBM value"min="0" max="999999" ondrop="return false;" onpaste="return false;">
+                <p>Cubic Meter (CBM):</p>
+                <input required type="number" name="cbm" placeholder="Enter CBM value"min="0" max="999999" ondrop="return false;" onpaste="return false;" >
 
                 <p>Price Per CBM:</p>
-                <input type="number" name="price_per_weight" placeholder="Enter Value"min="0" max="999999" ondrop="return false;" onpaste="return false;">
+                <input required type="number" name="price_per_weight" placeholder="Enter Value"min="0" max="999999" ondrop="return false;" onpaste="return false;">
 
 
                 <p>Profit:</p>
-                <input type="number" name="profit" placeholder="Expected Profit" min="0" max="999999" ondrop="return false;" onpaste="return false;">
+                <input required type="number" name="profit" placeholder="Expected Profit" min="0" max="999999" ondrop="return false;" onpaste="return false;" >
                 
                 
                 <p></p>
@@ -49,5 +43,13 @@
         </div>
     </div>
 </body>
+<script>
+  
+
+    function displayAlert(){
+      alert("Cargo Successfully Added....")     
+    }
+  
+</script>
 
 </html>

@@ -10,8 +10,8 @@ app = Flask(__name__)
 app.secret_key = "A"
 
 #Database
-urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
-# urlForDB = 'sqlite:///dataCargo.db'  #use if local database
+# urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
+urlForDB = 'sqlite:///dataCargo.db'  #use if local database
 
 app.config['SQLALCHEMY_DATABASE_URI'] = urlForDB
 db.init_app(app)
@@ -23,7 +23,7 @@ db.init_app(app)
 
 @app.before_first_request
 def create_table():
-    db.drop_all()  #Uncomment to delete all data in database
+    # db.drop_all()  #Uncomment to delete all data in database
     db.create_all()
     session.pop("vehicleLimit", None)
 
@@ -141,7 +141,7 @@ def cargo():
     
     if request.method == 'POST':
         cargos = CargoModel(
-            price_per_weight = request.form['price_per_weight'],
+            # price_per_weight = request.form['price_per_weight'],
             cbm = request.form['cbm'],
             profit = request.form['profit']
         )        
@@ -197,7 +197,7 @@ def update(pkgID):
         # try:
         if cargos:         
             newCargos = CargoModel(
-            price_per_weight = request.form['price_per_weight'],
+            # price_per_weight = request.form['price_per_weight'],
             cbm = request.form['cbm'],
             profit = request.form['profit']
             )

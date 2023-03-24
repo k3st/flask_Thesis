@@ -9,7 +9,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "A"
 
-#Database
+#Database trial 2 
 urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
 # urlForDB = 'sqlite:///dataCargo.db'  #use if local database
 
@@ -23,7 +23,7 @@ db.init_app(app)
 
 @app.before_first_request
 def create_table():
-    # db.drop_all()  #Uncomment to delete all data in database
+    db.drop_all()  #Uncomment to delete all data in database
     db.create_all()
     session.pop("vehicleLimit", None)
 

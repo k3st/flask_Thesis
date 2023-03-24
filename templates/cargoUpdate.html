@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>UPDATE CargoList</title>
     <link rel="stylesheet" href="/static/style4.css">
     <style>
-        body{
+        body {
             color: white;
             text-align: center;
         }
     </style>
 
-    
+
 </head>
+
 <body>
     <div class="banner">
         <div class="navbar">
-           <ul>
-                 <li>
+            <ul>
+                <li>
                     <a href="{{url_for('index')}}">Home</a>
                 </li>
                 <li>
@@ -34,18 +36,20 @@
                 <input type="integer" name="width" placeholder="width">
                 <p>Height</p>
                 <input type="integer" name="height" placeholder="height"> -->
-                
+
                 <p>Cubic Meter (CBM): </p>
-                <input type="number" name="cbm" placeholder="{{cargos.cbm}}"  min="0" max="999999" ondrop="return false;" onpaste="return false;" required>
+                <input type="number" name="cbm" placeholder="{{cargos.cbm}}" step="0.0001" min="0" max="999999"
+                    ondrop="return false;" onpaste="return false;" required>
 
                 <!-- <p>Price Per CBM:</p>
                 <input type="number" name="price_per_weight" placeholder="{{cargos.price_per_weight}}"min="0" max="999999" ondrop="return false;" onpaste="return false;" required> -->
 
 
                 <p>Profit:</p>
-                <input type="number" name="profit" placeholder="{{cargos.profit}}" min="0" max="999999" ondrop="return false;" onpaste="return false;" required>
-                
-                
+                <input type="number" name="profit" placeholder="{{cargos.profit}}" step="0.0001" min="0" max="999999"
+                    ondrop="return false;" onpaste="return false;" required>
+
+
                 <p></p>
                 <button type="submit" value="Submit">Confirm</button>
             </form>
@@ -53,11 +57,11 @@
     </div>
 </body>
 <script>
-  
 
-  function displayAlert(){
-    alert("UPDATE SUCCESS")     
-  }
+
+    function displayAlert() {
+        alert("UPDATE SUCCESS")
+    }
 
 </script>
 

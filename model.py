@@ -10,8 +10,8 @@ class CargoModel(db.Model):
     # name = db.Column(db.String(200), nullable=False)
 
     # price_per_weight = db.Column(db.Integer, nullable=False)
-    cbm = db.Column(db.Integer, nullable= False)
-    profit = db.Column(db.Integer, nullable=False)
+    cbm = db.Column(db.Float, nullable= False)
+    profit = db.Column(db.Float, nullable=False)
     # date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self,cbm,profit):

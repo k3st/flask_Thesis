@@ -33,7 +33,7 @@ def loginPage():
         global userInfo
         userName = request.form['emailUser']    
         userPass = request.form['passwordUser']   
-        if userName == "email@email.com" and userPass == "Test123!":  # CHANGE THIS BEFORE FINALS
+        if userName == "suadmin_acc@email.com" and userPass == "Test123!":  # CHANGE THIS BEFORE FINALS
             print("Password match")
             userInfo = "CredentialVerified"
             session ["currUser"] = userInfo

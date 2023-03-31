@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from compute_package import computeCargo
+from compute_package_plus import computeCargo
 from model import  db,CargoModel, TempModel #VehicleModel not used; changed to session
 #from compute_package import computeCargo  <==== old CargoModel
 

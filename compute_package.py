@@ -62,8 +62,8 @@ def computeCargo(Cargo, capacity):
         profit.clear()
         weight.clear()
 
-    # weight.append(0)
-    # profit.append(0)
+    weight.append(0)
+    profit.append(0)
     
 
     volumes = Cargo.query.all()

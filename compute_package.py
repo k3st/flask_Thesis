@@ -62,11 +62,13 @@ def computeCargo(Cargo, capacity):
         profit.clear()
         weight.clear()
 
-    weight.append(0)
-    profit.append(0)
+    # weight.append(0)
+    # profit.append(0)
     
 
     volumes = Cargo.query.all()
+    print(volumes)
+    print("********")
     for index in volumes:
         print(index.cbm)
         print(index.profit)
@@ -152,13 +154,17 @@ def computeCargo(Cargo, capacity):
                 # print("Node u2 inserted into prioQueue.")
                 # print("Priority Queue : ") 
                 prioQueue.print_pqueue()
-            print("\nAlgorithm DONE..... \n\n")
+    print("\nAlgorithm DONE..... \n\n")
     
    
     print("vehicleSize ", vehicleSize)
     print("\nEND maxProfit = ", maxProfit, "nodes generated = ", nodesGenerated)
     # bubble_sort(bestItems)
     print("bestItems = ", bestItems)
+    # for fixing inaccurate cargo #
+    # print("bestitems 1st", bestItems[0])
+    # for i in bestItems:
+    #     data = append bestItems[i]
 
     # profit.clear(),weight.clear()
     data = {'Profit':maxProfit, 'Items':bestItems}

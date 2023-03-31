@@ -1,14 +1,15 @@
 import heapq
 class Node:
-    def __init__(self, level, weight, profit, bound):
+    def __init__(self, level, weight, profit, bound, items):
         self.level = level
         self.weight = weight
         self.profit = profit
         self.bound = bound
+        self.items = items
     
     def __lt__(self, other):
         return self.bound > other.bound
-
+    
 def convertToInt(capacity):
     print("convertToInt() ",capacity)
     if capacity == "4 CBM":
@@ -61,28 +62,28 @@ def computeCargo(Cargo, size):
 
     # Start of Algorithm
     q = []
-    root = Node(-1, 0, 0, 0)
+    root = Node(-1, 0, 0, 0, [])
     root.bound = bound(root, n, capacity, weight, profit)
     heapq.heappush(q, root)
     max_profit = 0
-
-    print("\n\nInitializing Algorithm.... ")
+    bestItems = []
     while q:
         node = heapq.heappop(q)
         if node.bound < max_profit:
             continue
         if node.level == n - 1:
-            bestItems = node.weight
+            bestItems = node.items
             max_profit = node.profit
             print("current optimal  ", bestItems, "\t",max_profit)
             continue
         # Exclude next item
-        exclude = Node(node.level + 1, node.weight, node.profit, node.bound)
+        exclude = Node(node.level + 1, node.weight, node.profit, node.bound, node.items.copy())
         exclude.bound = bound(exclude, n, capacity, weight, profit)
         if exclude.bound > max_profit:
             heapq.heappush(q, exclude)
         # Include next item
-        include = Node(node.level + 1, node.weight + weight[node.level+1], node.profit + profit[node.level+1], node.bound)
+        include = Node(node.level + 1, node.weight + weight[node.level+1], node.profit + profit[node.level+1], node.bound, node.items.copy())
+        include.items.append(node.level+1)
         include.bound = bound(include, n, capacity, weight, profit)
         if include.bound > max_profit:
             heapq.heappush(q, include)

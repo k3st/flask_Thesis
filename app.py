@@ -5,6 +5,7 @@ from model import  db,CargoModel, TempModel #VehicleModel not used; changed to s
 
 # from flask_migrate import Migrate
 from datetime import datetime
+from raw_dataset import getRawData
 
 app = Flask(__name__)
 app.secret_key = "A"
@@ -123,6 +124,22 @@ def getTrial(pkgID):
     print("ERROR --@@@")
     
 
+# DB insert multiple
+@app.route('/addDataSet' , methods=['GET','POST'])
+def insertManyToDB():
+    db.drop_all()
+    db.create_all()
+    prompt = getRawData()
+    print("\n--@@@--\nData import success")
+    return render_template('systemMsg.html', msg=prompt)
+
+@app.route('/deleteDataSet' , methods=['GET','POST'])
+def deleteAll():
+    db.drop_all()
+    prompt = "Database has been wiped!"
+    db.create_all()
+    return render_template('systemMsg.html', msg=prompt)      
+    
 
 # = = = = = = = = = = = = = = = = = = = =  #
 # |         Create  Retrieve            |  #

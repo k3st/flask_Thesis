@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from sqlalchemy import Insert, MetaData, Select, Table, create_engine
 from compute_package_plus import computeCargo
 from model import  db,CargoModel, TempModel #VehicleModel not used; changed to session
 #from compute_package import computeCargo  <==== old CargoModel
@@ -235,3 +236,42 @@ def delete(pkgID):
 if __name__ == '__main__':    
     app.run(host='localhost', port=5000)
     app.run(debug = True)
+
+## = = = = = = = = = = = = = = = = = = = = ##
+##              TESTING                    ##
+## = = = = = = = = = = = = = = = = = = = = ##
+
+
+@app.route('/devMode', methods = ['GET', 'POST'])
+def devMode():
+    local_engine = create_engine('sqlite:///datasetWorldCargo.db')
+    if request.method == 'POST':
+        # Create a connection to the cloud database
+        cloud_engine = create_engine("postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo")
+
+        # Get metadata for the local database
+        local_meta = MetaData(bind=local_engine)
+        local_meta.reflect()
+
+        # Get metadata for the cloud database
+        cloud_meta = MetaData(bind=cloud_engine)
+        cloud_meta.reflect()
+        print("asda")    
+        # Create schema and tables in cloud database
+        for table_name, local_table in local_meta.tables.items():
+            if table_name not in cloud_meta.tables:
+                local_table_metadata = local_meta.tables[table_name].metadata
+                table_metadata = MetaData(bind=cloud_engine)
+                table = Table(table_name, table_metadata)
+                for column in local_table.columns:
+                    table.append_column(column.copy())
+                table.create()
+
+        with local_engine.connect() as local_conn:
+            with cloud_engine.connect() as cloud_conn:
+                for table_name, local_table in local_meta.tables.items():
+                    table = Table(table_name, cloud_meta, autoload=True, autoload_with=cloud_engine)
+                    rows = local_conn.execute(Select(local_table))
+                    cloud_conn.execute(Insert(table), [dict(row) for row in rows])
+    # return (f"welcome to developer mode.")
+    return render_template('devMode.html')

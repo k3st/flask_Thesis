@@ -92,14 +92,18 @@ def computeCargo(Cargo, size):
     print("capacity ", capacity)
     print("\nEND max_profit = ", max_profit,)
     # bubble_sort(bestItems)
-    print("bestItems = ", bestItems)
-    # for fixing inaccurate cargo #
+    print("bestItems(index) = ", bestItems)
+    # for fixing inaccurate cargo no.
     # print("bestitems 1st", bestItems[0])
     # for i in bestItems:
     #     data = append bestItems[i]
 
+    _bestItems = []
+    for i in bestItems:
+        _bestItems.append(volumes[i].id)
+    print(_bestItems)
     # profit.clear(),weight.clear()
-    data = {'Profit':max_profit, 'Items':bestItems}
+    data = {'Profit':max_profit, 'Items':_bestItems}
     print("data results : ",data)
     return data
 

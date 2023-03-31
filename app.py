@@ -9,8 +9,8 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "A"
 
-# urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
-urlForDB = 'sqlite:///dataCargo.db'  #use if local database
+urlForDB = "postgresql://datacargo_user:Q7iWPt0jm5QKoxsdGrZ5klJ8V3CQjApv@dpg-cfro831gp3jo1ds3h5qg-a.singapore-postgres.render.com/datacargo" #use for Production
+# urlForDB = 'sqlite:///dataCargo.db'  #use if local database
 
 app.config['SQLALCHEMY_DATABASE_URI'] = urlForDB
 db.init_app(app)

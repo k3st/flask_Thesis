@@ -107,7 +107,17 @@ def optimize():
         return redirect('/vehicle')       
     
     
+## = = = = = = = = = = = = = = = = = = = = ##
+##          DEVELOPER MODE                 ##
+## = = = = = = = = = = = = = = = = = = = = ##
 
+
+@app.route('/devMode', methods = ['GET', 'POST'])
+def devMode():
+    db.drop_all()
+    db.create_all()
+    return render_template('devMode.html')
+    
 
 @app.route('/trial/<int:pkgID>', methods=['GET','POST'])
 def getTrial(pkgID):
@@ -124,7 +134,7 @@ def getTrial(pkgID):
     print("ERROR --@@@")
     
 
-# DB insert multiple
+# DB insert multiple data rows
 @app.route('/addDataSet' , methods=['GET','POST'])
 def insertManyToDB():
     db.drop_all()

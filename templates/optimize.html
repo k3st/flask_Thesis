@@ -10,11 +10,13 @@
             color: white;
             text-align: center;
         }
-        p{
+
+        p {
             font-size: large;
             padding-top: 1%;
         }
-        .result{
+
+        .result {
             font-weight: bold;
             font-size: larger;
             color: cornsilk;
@@ -24,30 +26,47 @@
 
 <body>
     <div class="banner">
-        <center>
-            <h1 style="padding-top: 15%; padding-bottom: 2%;">THE DATA RESULTS</h1>
-                          
-                <p> The algorithm has recommended to ship the items.  {{data.Items}} </p>
-                <p class="result"> > >
-                    
-                    {% for i in data.Items %}  
-                    
-                    
-                    &nbsp;  Cargo ID# {{i}},
+        <h1 style="padding-top: 5%; padding-bottom: 2%;">THE DATA RESULTS</h1>
 
-                    {% endfor %}
-                </p>
-                <p>Following the recommended pattern would generate the current shipment around </p>
-                <p class="result"> > >	&nbsp;    ₱ {{data.Profit}} pesos.</p>
-            
-            
-        </center>
-        <div class="text-block">  </div>
-        
+        <p> The algorithm has recommended to ship the items. {{data.Items}} </p>
+        <p class="result"> > >
+
+            {% for i in data.Items %}
+
+
+            &nbsp; Cargo ID# {{i}},
+
+            {% endfor %}
+        </p>
+        <p>Following the recommended pattern would generate the current shipment around </p>
+        <p class="result"> > > &nbsp; ₱ {{data.total_profit}} pesos.</p>
+        <br><br>
+
+        <form action='' , target="_blank" method="POST">
+            <button type="submit" name="submit_button" value="details">Show
+                Table</button>
+        </form>
+
+        <h2 style="padding-top: 15%; padding-bottom: 2%;">Current Loading System Results</h2>
+        <p> > >
+            {% for i in ctrlData['_Items'] %}
+            &nbsp;&nbsp; Cargo ID# {{ i }}, (₱ {{ ctrlData._Profit[loop.index0] }}) &nbsp;&nbsp;||
+            {% endfor %}
+        </p>
+        <p>Following the non-algo pattern would generate a profit </p>
+        <p> > > &nbsp; ₱ {{ctrlData._total_profit}} pesos.</p>
+
+
+
+
+
+
+        <div class="text-block"> </div>
+
     </div>
 
-    
-    
+
+
 </body>
 
 </html>

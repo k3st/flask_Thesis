@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from compute_package_plus import computeCargo
+from compute_package_plus import computeCargo, fifo
 from model import  db,CargoModel, TempModel #VehicleModel not used; changed to session
 #from compute_package import computeCargo  <==== old CargoModel
 
@@ -95,10 +95,16 @@ def optimize():
         vehicleLimit = session ["vehicleLimit"]
         print("Condition True: ",vehicleLimit)
         try:
-            # results=computeCargo(CargoModel,vehicleLimit)        
-            print("="*25,"@"*10,"="*25)
-            # print(results)
-            return render_template('optimize.html', data = computeCargo(CargoModel,vehicleLimit) )
+            if request.method == 'GET':  
+                # results=computeCargo(CargoModel,vehicleLimit)        
+                print("="*25,"@"*10,"="*25)
+                # print(results)
+                _ctrlData = fifo(CargoModel,vehicleLimit)
+                data = computeCargo(CargoModel,vehicleLimit)
+                return render_template('optimize.html', data = data, ctrlData = _ctrlData)
+            if request.method == 'POST':
+                data = computeCargo(CargoModel,vehicleLimit)
+                return render_template('showTable.html', result = data)
         except Exception as err: 
             print(err)
             return render_template('error.html', err=err)
@@ -119,19 +125,20 @@ def devMode():
     return render_template('devMode.html')
     
 
-@app.route('/trial/<int:pkgID>', methods=['GET','POST'])
-def getTrial(pkgID):
-    err2 = None
-    err = "package not found"
-    # sample = db.get_or_404(CargoModel,pkgID,description=err)
-    try:
-        sample = db.get_or_404(CargoModel,pkgID)
-    except Exception as err2:
-        print(err2)
+@app.route('/trial', methods=['GET','POST'])
+def getTrial():
+    return ("done", fifo(CargoModel,15))
+    # err2 = None
+    # err = "package not found"
+    # # sample = db.get_or_404(CargoModel,pkgID,description=err)
+    # try:
+    #     sample = db.get_or_404(CargoModel,pkgID)
+    # except Exception as err2:
+    #     print(err2)
 
-    if err2 is None:
-        return render_template('index.html')
-    print("ERROR --@@@")
+    # if err2 is None:
+    #     return render_template('index.html')
+    # print("ERROR --@@@")
     
 
 # DB insert multiple data rows

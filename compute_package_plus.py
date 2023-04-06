@@ -51,7 +51,7 @@ def computeCargo(Cargo, size):
         weight.append(index.cbm)
         profit.append(index.profit)
          
-    capacity = convertToInt(size)
+    capacity = convertToInt(size) + 1
     n = len(weight)
 
     print("Total Items: ", n)    
@@ -99,11 +99,14 @@ def computeCargo(Cargo, size):
     #     data = append bestItems[i]
 
     _bestItems = []
+    _bestProfit = []
     for i in bestItems:
         _bestItems.append(volumes[i].id)
+        _bestProfit.append(volumes[i].profit)
     print(_bestItems)
+    print(_bestProfit)
     # profit.clear(),weight.clear()
-    data = {'Profit':max_profit, 'Items':_bestItems}
+    data = {'Profit':_bestProfit, 'total_profit':max_profit, 'Items':_bestItems}
     print("data results : ",data)
     return data
 
@@ -132,4 +135,48 @@ def bubble_sort(nlist):
                 no_swap = False
         if no_swap:
             return 
+        
+def fifo(cargo, size):
+    print("\n\nFIFO() running")
+    global _capacity
+    fifoWeight= []
+    fifoProfit = []
+    
+    if len(fifoWeight) > 0:
+        fifoWeight.clear()
+        fifoProfit.clear()
+        print(" init List cleared...\n\n")
 
+    dataCargo = cargo.query.all()        
+    for index in dataCargo:
+        fifoWeight.append(index.cbm)
+        fifoProfit.append(index.profit)    
+    _capacity = convertToInt(size)
+    n = len(fifoWeight)
+    print("\nControl Data OUTPUT\nTotal Items: ", n)       
+    print("_capacity ", _capacity) 
+    print("weight: ",fifoWeight)    
+    print("profit ", fifoProfit)
+    
+    i,totalLoad = 0,0
+    _addedItem, _rProfit = [],[]
+   
+    while (i != n):   
+        totalLoad += fifoWeight[i]        
+        if (totalLoad > _capacity):
+            print(f"'{i}' Exceeded {totalLoad}", end=", ")            
+            totalLoad -= fifoWeight[i]
+            print(f"New Total Load: {totalLoad}")
+            i+=1
+            continue            
+        print(f"data index [ {i} ] Added")
+        _addedItem.append(dataCargo[i].id)
+        _rProfit.append(fifoProfit[i])
+        i+=1
+        
+    _rtotal_profit = sum(_rProfit)
+    print(f"Total Profit is  {_rtotal_profit}")
+    _ctrlData = {'_Items':_addedItem, '_Profit':_rProfit, '_total_profit': _rtotal_profit}
+    print("data results : ",_ctrlData)
+    print("\n","="*25,"FIFO cargo done","="*25)
+    return _ctrlData
